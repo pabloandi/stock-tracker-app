@@ -1,0 +1,12 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "stock-tracker-app",
+            "database": "${workspaceFolder:stock-tracker-app}/database/database.sqlite"
+        }
+    ],
+    "better-phpunit.phpunitBinary": "php artisan test",
+    "better-phpunit.xmlConfigFilepath": "${workspaceFolder:stock-tracker-app}"
+}

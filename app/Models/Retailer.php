@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Product extends Model
+class Retailer extends Model
 {
     protected $fillable = ['name'];
 
@@ -14,13 +14,11 @@ class Product extends Model
         return $this->hasMany(Stock::class);
     }
 
-    public function inStock()
+    public function addStock(Product $product, Stock $stock)
     {
-        return $this->stock()->where('in_stock', true)->exists();
+        $stock->product_id = $product->id;
+
+        $this->stock()->save($stock);
     }
 
-    public function track()
-    {
-        $this->stock->each->track();
-    }
 }
