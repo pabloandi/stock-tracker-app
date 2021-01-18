@@ -21,7 +21,7 @@ class RetailerWithProductSeeder extends Seeder
         ]);
 
         $retailer = Retailer::create([
-            'name'  =>  'Target'
+            'name'  =>  'Best Buy'
         ]);
 
         $stock = new Stock([

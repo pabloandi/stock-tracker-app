@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Facades\App\Clients\ClientFactory;
+
 
 class Retailer extends Model
 {
@@ -19,6 +21,11 @@ class Retailer extends Model
         $stock->product_id = $product->id;
 
         $this->stock()->save($stock);
+    }
+
+    public function client()
+    {
+        return ClientFactory::make($this);
     }
 
 }
