@@ -23,8 +23,8 @@ class TrackCommandTest extends TestCase
 
         Http::fake(function(){
             return [
-                'available' => true,
-                'price'     => 29900
+                'onlineAvailability' => true,
+                'salePrice'     => 29900
             ];
         });
 
