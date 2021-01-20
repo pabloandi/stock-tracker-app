@@ -14,6 +14,11 @@ class Product extends Model
         return $this->hasMany(Stock::class);
     }
 
+    public function history()
+    {
+        return $this->hasMany(History::class);
+    }
+
     public function inStock()
     {
         return $this->stock()->where('in_stock', true)->exists();
@@ -21,6 +26,17 @@ class Product extends Model
 
     public function track()
     {
-        $this->stock->each->track();
+        $this->stock->each->track(
+            function($stock){ $this->recordHistory($stock); }
+        );
+    }
+
+    public function recordHistory(Stock $stock)
+    {
+        $this->history()->create([
+            'price'         =>  $stock->price,
+            'in_stock'         =>  $stock->in_stock,
+            'stock_id'      =>  $stock->id,
+        ]);
     }
 }

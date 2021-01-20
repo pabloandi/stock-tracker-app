@@ -16,15 +16,12 @@ class Stock extends Model
         'in_stock'  => 'boolean'
     ];
 
-    public function track()
+    public function track($callback = null)
     {
         // hit a API endpoint
-
-
         $status = $this->retailer
                         ->client()
                         ->checkAvailability($this);
-
 
         // refresh the current stock record
         $this->update([
@@ -32,7 +29,11 @@ class Stock extends Model
             'price'     =>   $status->price,
         ]);
 
-        $this->recordHistory();
+        $callback && $callback($this);
+
+        // $this->product->recordHistory($this);
+
+        // $this->recordHistory();
     }
 
     public function retailer()
@@ -40,18 +41,12 @@ class Stock extends Model
         return $this->belongsTo(Retailer::class);
     }
 
-    public function history()
+    public function product()
     {
-        return $this->hasMany(History::class);
+        return $this->belongsTo(Product::class);
     }
 
-    protected function recordHistory()
-    {
-        $this->history()->create([
-            'price'         =>  $this->price,
-            'in_stock'         =>  $this->in_stock,
-            'product_id'    =>  $this->product_id,
-            'stock_id'      =>  $this->id,
-        ]);
-    }
+
+
+
 }
