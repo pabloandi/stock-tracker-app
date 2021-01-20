@@ -3,6 +3,8 @@
 namespace Tests;
 
 use Illuminate\Contracts\Console\Kernel;
+use Facades\App\Clients\ClientFactory;
+use App\Clients\StockStatus;
 
 trait CreatesApplication
 {
@@ -18,5 +20,11 @@ trait CreatesApplication
         $app->make(Kernel::class)->bootstrap();
 
         return $app;
+    }
+
+    public function mockingClientRequest($available = true, $price = 29900)
+    {
+        ClientFactory::shouldReceive('make->checkAvailability')
+            ->andReturn(new StockStatus($available, $price));
     }
 }

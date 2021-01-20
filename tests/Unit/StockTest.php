@@ -39,12 +39,7 @@ class StockTest extends TestCase
         //given I have a retailer with stock
         $this->seed(RetailerWithProductSeeder::class);
 
-        // $clientMock = Mockery::mock(Client::class);
-        // $clientMock->shouldReceive('checkAvailability')->andReturn(new StockStatus($available = true, $price = 9900));
-
-        ClientFactory::shouldReceive('make->checkAvailability')->andReturn(
-            new StockStatus($available = true, $price = 9900)
-        );
+        $this->mockingClientRequest($available = true, $price = 9900);
 
         $stock = tap(Stock::first())->track();
 
