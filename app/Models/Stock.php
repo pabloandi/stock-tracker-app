@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use App\Events\NowInStock;
+use App\UseCases\TrackStock;
 
 class Stock extends Model
 {
@@ -19,26 +20,9 @@ class Stock extends Model
 
     public function track($callback = null)
     {
-        // hit a API endpoint
-        $status = $this->retailer
-                        ->client()
-                        ->checkAvailability($this);
 
-        if(! $this->in_stock && $status->available){
-            event(new NowInStock($this));
-        }
+        (new TrackStock($this))->handle();
 
-        // refresh the current stock record
-        $this->update([
-            'in_stock'  =>   $status->available,
-            'price'     =>   $status->price,
-        ]);
-
-        $callback && $callback($this);
-
-        // $this->product->recordHistory($this);
-
-        // $this->recordHistory();
     }
 
     public function retailer()
